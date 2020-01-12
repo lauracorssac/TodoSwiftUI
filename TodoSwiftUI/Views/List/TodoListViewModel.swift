@@ -17,6 +17,7 @@ class TodoListViewModel: ObservableObject {
     
     //@Published var todoItems: [TodoItem] = []
     @Published var viewState: ViewState = .loading
+    @Published var tryAgainButtonPressed: Void = ()
     
     private let viewStateSubject = PassthroughSubject<ViewState, Never>()
     private let todoItemsSubject = PassthroughSubject<[TodoItem], URLError>()
@@ -41,22 +42,20 @@ class TodoListViewModel: ObservableObject {
             .assign(to: \.viewState, on: self)
             .store(in: &cancellables)
         
-        service.getTodoItems()
-            .receive(on: RunLoop.main)
-            .sink(receiveCompletion: { [viewStateSubject] completion in
-            
-                switch completion {
-                case .finished:
-                    break
-                case .failure(_):
+        $tryAgainButtonPressed
+            .handleEvents(receiveOutput: { [viewStateSubject] _ in viewStateSubject.send(.loading) })
+            .flatMap { [viewStateSubject] _ in
+                service.getTodoItems()
+                .receive(on: RunLoop.main)
+                .catch { _ -> Empty<[TodoItem], Never> in
                     viewStateSubject.send(.error)
-                }
-                
-            }) { [viewStateSubject] items in
+                    return .init(completeImmediately: false) }
+            }
+            .receive(on: RunLoop.main)
+            .sink(receiveValue: { [viewStateSubject] items in
                 viewStateSubject.send(.content(items))
-            }.store(in: &cancellables)
-        
-       
+            })
+            .store(in: &cancellables)
         
     }
 }

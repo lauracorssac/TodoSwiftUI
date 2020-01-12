@@ -22,7 +22,16 @@ struct TodoListView: View {
     func contentView() -> AnyView {
         switch viewModel.viewState {
         case .error:
-            return AnyView(Text("errro :("))
+            return AnyView(
+                VStack {
+                    Text("errro :(")
+                    Button(action: {
+                        self.viewModel.tryAgainButtonPressed = ()
+                    }) {
+                        Text("try again")
+                    }
+                }
+            )
         case .content(let todoItems):
             return AnyView(List(todoItems) { item in
                 Text(item.title)
@@ -32,8 +41,11 @@ struct TodoListView: View {
         }
     }
     
+    private func tryAgain() {
+        
+    }
+    
 }
-
 
 struct TodoListView_Previews: PreviewProvider {
     static var previews: some View {
