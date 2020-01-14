@@ -13,7 +13,7 @@ class TodoListService {
     
     func getTodoItems() -> AnyPublisher<[TodoItem], URLError> {
         
-        let urlString = "http://www.mocky.io/v2/5e1b63a43100007b004f3344"
+        let urlString = "http://www.mocky.io/v2/5e1bb4e63100008d324f33ca"
         
         guard let url = URL(string: urlString) else {
             return Fail<[TodoItem], URLError>(error: URLError(URLError.unsupportedURL))

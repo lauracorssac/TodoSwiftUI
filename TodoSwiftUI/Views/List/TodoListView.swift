@@ -12,6 +12,7 @@ import Combine
 struct TodoListView: View {
     
     @ObservedObject var viewModel: TodoListViewModel
+    private let converter = TodoItemConverter()
     
     var body: some View {
        
@@ -33,9 +34,11 @@ struct TodoListView: View {
                 }
             )
         case .content(let todoItems):
-            return AnyView(List(todoItems) { item in
-                Text(item.title)
-            })
+            return AnyView(
+                List(todoItems) { item in
+                    TodoItemRow(todoItem: self.converter.convertToReactive(todoItem: item))
+                }.buttonStyle(PlainButtonStyle())
+            )
         case .loading:
             return AnyView(Text("loading"))
         }
