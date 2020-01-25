@@ -11,16 +11,29 @@ import Combine
 
 struct TodoListView: View {
     
+    @State private var showModal = false
     @ObservedObject var viewModel: TodoListViewModel
     private let converter = TodoItemConverter()
     
     var body: some View {
-       
-        contentView()
-       
+
+        NavigationView {
+            contentView()
+            .navigationBarTitle("To Do Lista")
+            .navigationBarItems(trailing: Button(action: {
+                self.showModal = true
+            }, label: {
+                Image(systemName: "plus")
+                    .imageScale(.large)
+            }))
+                .sheet(isPresented: $showModal) {
+                    NewToDoView(showModal: self.$showModal, viewModel: NewToDoViewModel())
+            }
+        }
+        
     }
     
-    func contentView() -> AnyView {
+    func contentView() -> some View {
         switch viewModel.viewState {
         case .error:
             return AnyView(
