@@ -21,6 +21,7 @@
 		8D7BD8BA23CBE2E300FD6CAF /* TodoItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D7BD8B923CBE2E300FD6CAF /* TodoItemRow.swift */; };
 		8D7BD8BD23D138ED00FD6CAF /* NewToDoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D7BD8BC23D138ED00FD6CAF /* NewToDoView.swift */; };
 		8D7BD8BF23D1390500FD6CAF /* NewToDoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D7BD8BE23D1390500FD6CAF /* NewToDoViewModel.swift */; };
+		8D7BD8C123DDC5BC00FD6CAF /* TodoListServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D7BD8C023DDC5BC00FD6CAF /* TodoListServices.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +53,7 @@
 		8D7BD8B923CBE2E300FD6CAF /* TodoItemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoItemRow.swift; sourceTree = "<group>"; };
 		8D7BD8BC23D138ED00FD6CAF /* NewToDoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewToDoView.swift; sourceTree = "<group>"; };
 		8D7BD8BE23D1390500FD6CAF /* NewToDoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewToDoViewModel.swift; sourceTree = "<group>"; };
+		8D7BD8C023DDC5BC00FD6CAF /* TodoListServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListServices.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,6 +157,7 @@
 			isa = PBXGroup;
 			children = (
 				8D5A8DD823CB608F00180782 /* TodoListService.swift */,
+				8D7BD8C023DDC5BC00FD6CAF /* TodoListServices.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -277,6 +280,7 @@
 				8D7BD8BF23D1390500FD6CAF /* NewToDoViewModel.swift in Sources */,
 				8D5A8DD323CB5B5500180782 /* TodoListView.swift in Sources */,
 				8D5A8DD023CB56E200180782 /* TodoItem.swift in Sources */,
+				8D7BD8C123DDC5BC00FD6CAF /* TodoListServices.swift in Sources */,
 				8D5A8DD623CB5B7100180782 /* TodoListViewModel.swift in Sources */,
 				8D5A8DB123CA9E1200180782 /* ContentView.swift in Sources */,
 			);

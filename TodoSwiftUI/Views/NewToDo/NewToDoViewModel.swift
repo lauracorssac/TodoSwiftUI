@@ -48,10 +48,13 @@ class NewToDoViewModel: ObservableObject {
                 
                 return service
                     .save(todoItem: item)
+                    .receive(on: RunLoop.main)
                     .catch(self.handleError(error:))
                     .eraseToAnyPublisher()
                 
-            }).sink(receiveValue: { [weak self] _ in
+            })
+            .receive(on: RunLoop.main)
+            .sink(receiveValue: { [weak self] _ in
                 self?.shouldFinish = true
             }).store(in: &subscriptions)
             

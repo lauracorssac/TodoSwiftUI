@@ -40,7 +40,7 @@ struct TodoListView: View {
                 VStack {
                     Text("errro :(")
                     Button(action: {
-                        self.viewModel.tryAgainButtonPressed = ()
+                        self.viewModel.shoudRequest = ()
                     }) {
                         Text("try again")
                     }

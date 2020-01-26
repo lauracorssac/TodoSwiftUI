@@ -15,12 +15,10 @@ enum ViewState {
 
 class TodoListViewModel: ObservableObject {
     
-    @Published var viewState: ViewState = .loading
-    @Published var tryAgainButtonPressed: Void = ()
+    @Published private(set) var viewState: ViewState = .loading
+    @Published var shoudRequest: Void = ()
     
     private let viewStateSubject = PassthroughSubject<ViewState, Never>()
-    private let todoItemsSubject = PassthroughSubject<[TodoItem], URLError>()
-    private let errorSubject = PassthroughSubject<URLError, Never>()
     private var cancellables = [AnyCancellable]()
     
     init(service: TodoListService = TodoListService()) {
@@ -29,7 +27,7 @@ class TodoListViewModel: ObservableObject {
             .assign(to: \.viewState, on: self)
             .store(in: &cancellables)
         
-        $tryAgainButtonPressed
+        $shoudRequest
             .handleEvents(receiveOutput: { [viewStateSubject] _ in viewStateSubject.send(.loading) })
             .flatMap { [viewStateSubject] _ in
                 service.getTodoItems()

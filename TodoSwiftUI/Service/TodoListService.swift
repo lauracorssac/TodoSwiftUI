@@ -9,11 +9,6 @@
 import Foundation
 import Combine
 
-protocol ToDoServices {
-    func getTodoItems() -> AnyPublisher<[TodoItem], URLError>
-    func save(todoItem: TodoItem) -> AnyPublisher<Void, URLError>
-}
-
 class TodoListService: ToDoServices {
     
     func save(todoItem: TodoItem) -> AnyPublisher<Void, URLError> {
