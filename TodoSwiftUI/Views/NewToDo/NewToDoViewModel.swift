@@ -13,14 +13,15 @@ class NewToDoViewModel: ObservableObject {
     
     @Published var titleTyped: String = ""
     @Published var dateChoosed: Date = Date()
-    @Published var dateFormatted: String = ""
     
-    @Published var shouldEnableDone: Bool = false
+    @Published private var dateFormatted: String = ""
     @Published var shouldPresentAlert: Bool = false
+    @Published private(set) var shouldEnableDone: Bool = false
+    @Published private(set) var shouldFinish: Bool = false
     
-    var subscriptions = [AnyCancellable]()
+    private var subscriptions = [AnyCancellable]()
+    
     let doneButtonPressed = PassthroughSubject<Void, Never>()
-    let saveSucceeded = PassthroughSubject<Bool, Never>()
     
     init(service: ToDoServices) {
         
@@ -51,10 +52,9 @@ class NewToDoViewModel: ObservableObject {
                     .eraseToAnyPublisher()
                 
             }).sink(receiveValue: { [weak self] _ in
-                self?.saveSucceeded.send(true)
+                self?.shouldFinish = true
             }).store(in: &subscriptions)
             
-        
     }
     
     func getItem() -> TodoItem {

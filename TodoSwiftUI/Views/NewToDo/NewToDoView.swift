@@ -20,8 +20,8 @@ struct NewToDoView: View {
         self._showModal = showModal
         self.viewModel = viewModel
         
-        viewModel.saveSucceeded
-            .map {!$0 }
+        self.viewModel.$shouldFinish
+            .map { !$0 }
             .assign(to: \.showModal, on: self)
             .store(in: &subscriptions)
         
@@ -50,9 +50,8 @@ struct NewToDoView: View {
                 trailing:
                 
                 Button(action: (self.viewModel.doneButtonPressed.send),
-                       label: {
-                        Text("Done")
-                        }).disabled(!viewModel.shouldEnableDone)
+                       label: { Text("Done") })
+                    .disabled(!viewModel.shouldEnableDone)
                 
             ).alert(isPresented: $viewModel.shouldPresentAlert) { () -> Alert in
                 Alert(title: Text("Uuups :("), message: Text("Não foi possível registrar seu Todo"), dismissButton: nil)
