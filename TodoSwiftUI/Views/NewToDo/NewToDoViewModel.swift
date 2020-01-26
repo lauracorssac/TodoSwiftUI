@@ -16,10 +16,13 @@ class NewToDoViewModel: ObservableObject {
     @Published var dateFormatted: String = ""
     
     @Published var shouldEnableDone: Bool = false
+    @Published var shouldPresentAlert: Bool = false
     
     var subscriptions = [AnyCancellable]()
+    let doneButtonPressed = PassthroughSubject<Void, Never>()
+    let saveSucceeded = PassthroughSubject<Bool, Never>()
     
-    init() {
+    init(service: ToDoServices) {
         
         $titleTyped
             .map { !$0.isEmpty }
@@ -34,6 +37,34 @@ class NewToDoViewModel: ObservableObject {
             .assign(to: \.dateFormatted, on: self)
             .store(in: &subscriptions)
         
+        doneButtonPressed
+            .map(getItem)
+            .flatMap({ [weak self] item -> AnyPublisher<Void, Never> in
+                
+                guard let self = self else {
+                    return Empty<Void, Never>().eraseToAnyPublisher()
+                }
+                
+                return service
+                    .save(todoItem: item)
+                    .catch(self.handleError(error:))
+                    .eraseToAnyPublisher()
+                
+            }).sink(receiveValue: { [weak self] _ in
+                self?.saveSucceeded.send(true)
+            }).store(in: &subscriptions)
+            
+        
+    }
+    
+    func getItem() -> TodoItem {
+        return TodoItem(id: 0, title: self.titleTyped, date: self.dateFormatted, isDone: false)
+    }
+    
+    func handleError(error: URLError) -> Empty<Void, Never> {
+        
+        self.shouldPresentAlert = true
+        return Empty<Void, Never>()
     }
     
 }

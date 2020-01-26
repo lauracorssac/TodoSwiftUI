@@ -9,11 +9,27 @@
 import Foundation
 import Combine
 
-class TodoListService {
+protocol ToDoServices {
+    func getTodoItems() -> AnyPublisher<[TodoItem], URLError>
+    func save(todoItem: TodoItem) -> AnyPublisher<Void, URLError>
+}
+
+class TodoListService: ToDoServices {
+    
+    func save(todoItem: TodoItem) -> AnyPublisher<Void, URLError> {
+        
+        return Just(Void())
+            .mapError { _ in URLError(URLError.unknown) }
+            .eraseToAnyPublisher()
+        
+//        return Fail<Void, URLError>(error: URLError(URLError.unsupportedURL))
+//            .eraseToAnyPublisher()
+        
+    }
     
     func getTodoItems() -> AnyPublisher<[TodoItem], URLError> {
         
-        let urlString = "http://www.mocky.io/v2/5e1bb4e63100008d324f33ca"
+        let urlString = "http://localhost:3000/getTodoList"
         
         guard let url = URL(string: urlString) else {
             return Fail<[TodoItem], URLError>(error: URLError(URLError.unsupportedURL))

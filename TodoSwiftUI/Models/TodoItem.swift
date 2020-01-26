@@ -12,7 +12,7 @@ struct TodoItem: Codable, Identifiable {
     
     let id: Int
     let title: String
-    //let date: Date
+    let date: String
     let isDone: Bool
 }
 
@@ -20,12 +20,14 @@ class TodoItemReactive: ObservableObject {
     
     let id: Int
     let title: String
+    let date: String
     @Published var isDone: Bool
     
-    init(id: Int, title: String, isDone: Bool) {
+    init(id: Int, title: String, isDone: Bool, date: String) {
         self.id = id
         self.title = title
         self.isDone = isDone
+        self.date = date
     }
 }
 
@@ -33,6 +35,7 @@ class TodoItemConverter {
     func convertToReactive(todoItem: TodoItem) -> TodoItemReactive {
         TodoItemReactive(id: todoItem.id,
                          title: todoItem.title,
-                         isDone: todoItem.isDone)
+                         isDone: todoItem.isDone,
+                         date: todoItem.date)
     }
 }

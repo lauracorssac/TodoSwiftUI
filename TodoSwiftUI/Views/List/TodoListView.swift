@@ -27,7 +27,7 @@ struct TodoListView: View {
                     .imageScale(.large)
             }))
                 .sheet(isPresented: $showModal) {
-                    NewToDoView(showModal: self.$showModal, viewModel: NewToDoViewModel())
+                    NewToDoView(showModal: self.$showModal, viewModel: NewToDoViewModel(service: TodoListService()))
             }
         }
         
