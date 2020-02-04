@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreData
 
 struct TodoItem: Codable, Identifiable {
     
@@ -14,6 +15,13 @@ struct TodoItem: Codable, Identifiable {
     let title: String
     let date: String
     let isDone: Bool
+    
+    init(id: Int, title: String, date: String, isDone: Bool) {
+        self.id = id
+        self.title = title
+        self.date = date
+        self.isDone = isDone
+    }
 }
 
 class TodoItemReactive: ObservableObject {
@@ -29,6 +37,26 @@ class TodoItemReactive: ObservableObject {
         self.isDone = isDone
         self.date = date
     }
+}
+
+@objc(TodoItemManagedObject)
+class TodoItemManagedObject: NSManagedObject, Identifiable {
+    
+    @NSManaged var id: Int64
+    @NSManaged var title: String
+    @NSManaged var date: Date
+    @NSManaged var isDone: Bool
+    
+}
+
+class ManagedObjectToReactiveConverter {
+    func convertToReactive(todoItem: TodoItemManagedObject) -> TodoItemReactive {
+       
+        TodoItemReactive(id: todoItem.id.hashValue,
+                            title: todoItem.title,
+                            isDone: todoItem.isDone,
+                            date: "")
+       }
 }
 
 class TodoItemConverter {

@@ -8,6 +8,7 @@
 
 import Foundation
 import Combine
+import CoreData
 
 class NewToDoViewModel: ObservableObject {
     
@@ -33,31 +34,17 @@ class NewToDoViewModel: ObservableObject {
         $dateChoosed
             .map { date in
                 let formatter = DateFormatter()
+                formatter.locale = Locale(identifier: "br")
                 formatter.dateFormat = "dd MMMM yyyy"
                 return formatter.string(from: date) }
             .assign(to: \.dateFormatted, on: self)
             .store(in: &subscriptions)
         
         doneButtonPressed
-            .map(getItem)
-            .flatMap({ [weak self] item -> AnyPublisher<Void, Never> in
-                
-                guard let self = self else {
-                    return Empty<Void, Never>().eraseToAnyPublisher()
-                }
-                
-                return service
-                    .save(todoItem: item)
-                    .receive(on: RunLoop.main)
-                    .catch(self.handleError(error:))
-                    .eraseToAnyPublisher()
-                
-            })
-            .receive(on: RunLoop.main)
-            .sink(receiveValue: { [weak self] _ in
-                self?.shouldFinish = true
-            }).store(in: &subscriptions)
-            
+            .sink { [weak self] _ in
+                self?.save() }
+            .store(in: &subscriptions)
+        
     }
     
     func getItem() -> TodoItem {
@@ -68,6 +55,24 @@ class NewToDoViewModel: ObservableObject {
         
         self.shouldPresentAlert = true
         return Empty<Void, Never>()
+    }
+    
+    func save() {
+        
+        guard
+            let managedObj = NSEntityDescription.insertNewObject(forEntityName: "\(TodoItemManagedObject.self)", into: CoreDataStack.shared.persistentContainer.viewContext) as? TodoItemManagedObject
+            else { return }
+        
+        managedObj.date = dateChoosed
+        managedObj.isDone = false
+        managedObj.title = titleTyped
+        
+        guard (try? CoreDataStack.shared.saveContext()) == nil else {
+            shouldFinish = true
+            return
+        }
+        self.shouldPresentAlert = true
+        
     }
     
 }

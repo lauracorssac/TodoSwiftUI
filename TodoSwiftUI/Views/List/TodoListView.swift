@@ -8,56 +8,32 @@
 
 import SwiftUI
 import Combine
+import CoreData
 
 struct TodoListView: View {
     
     @State private var showModal = false
     @ObservedObject var viewModel: TodoListViewModel
-    private let converter = TodoItemConverter()
-    
+    private let converter = ManagedObjectToReactiveConverter()
+    @FetchRequest(entity: TodoItemManagedObject.entity(), sortDescriptors: []) var todoItems: FetchedResults<TodoItemManagedObject>
+
     var body: some View {
 
         NavigationView {
-            contentView()
-            .navigationBarTitle("To Do Lista")
-            .navigationBarItems(trailing: Button(action: {
-                self.showModal = true
-            }, label: {
-                Image(systemName: "plus")
-                    .imageScale(.large)
-            }))
+            
+            List(todoItems) { item in
+                Text(item.title) }
+                .buttonStyle(PlainButtonStyle())
+                .navigationBarTitle("To Do Lista")
+                .navigationBarItems(trailing: Button(action: {
+                    self.showModal = true
+                }, label: {
+                    Image(systemName: "plus")
+                        .imageScale(.large)
+                }))
                 .sheet(isPresented: $showModal) {
-                    NewToDoView(showModal: self.$showModal, viewModel: NewToDoViewModel(service: TodoListService()))
-            }
+                    NewToDoView(showModal: self.$showModal, viewModel: NewToDoViewModel(service: TodoListService())) }
         }
-        
-    }
-    
-    func contentView() -> some View {
-        switch viewModel.viewState {
-        case .error:
-            return AnyView(
-                VStack {
-                    Text("errro :(")
-                    Button(action: {
-                        self.viewModel.shoudRequest = ()
-                    }) {
-                        Text("try again")
-                    }
-                }
-            )
-        case .content(let todoItems):
-            return AnyView(
-                List(todoItems) { item in
-                    TodoItemRow(todoItem: self.converter.convertToReactive(todoItem: item))
-                }.buttonStyle(PlainButtonStyle())
-            )
-        case .loading:
-            return AnyView(Text("loading"))
-        }
-    }
-    
-    private func tryAgain() {
         
     }
     

@@ -35,7 +35,8 @@ struct NewToDoView: View {
                 
                 DatePicker(selection: $viewModel.dateChoosed, in: Date()..., displayedComponents: .date) {
                     Text("Select a date")
-                } }
+                }
+            }
             .navigationBarTitle("New Todo")
             .navigationBarItems(
                

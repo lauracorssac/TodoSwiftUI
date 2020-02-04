@@ -8,6 +8,7 @@
 
 import Foundation
 import Combine
+import SwiftUI
 
 enum ViewState {
     case loading, error, content([TodoItem])
@@ -17,30 +18,32 @@ class TodoListViewModel: ObservableObject {
     
     @Published private(set) var viewState: ViewState = .loading
     @Published var shoudRequest: Void = ()
+    @FetchRequest(fetchRequest: CoreDataManager.allIdeasFetchRequest()) var todoItems: FetchedResults<TodoItemManagedObject>
     
     private let viewStateSubject = PassthroughSubject<ViewState, Never>()
     private var cancellables = [AnyCancellable]()
     
     init(service: TodoListService = TodoListService()) {
         
-        viewStateSubject
-            .assign(to: \.viewState, on: self)
-            .store(in: &cancellables)
         
-        $shoudRequest
-            .handleEvents(receiveOutput: { [viewStateSubject] _ in viewStateSubject.send(.loading) })
-            .flatMap { [viewStateSubject] _ in
-                service.getTodoItems()
-                .receive(on: RunLoop.main)
-                .catch { _ -> Empty<[TodoItem], Never> in
-                    viewStateSubject.send(.error)
-                    return .init(completeImmediately: false) }
-            }
-            .receive(on: RunLoop.main)
-            .sink(receiveValue: { [viewStateSubject] items in
-                viewStateSubject.send(.content(items))
-            })
-            .store(in: &cancellables)
+//        viewStateSubject
+//            .assign(to: \.viewState, on: self)
+//            .store(in: &cancellables)
+//
+//        $shoudRequest
+//            .handleEvents(receiveOutput: { [viewStateSubject] _ in viewStateSubject.send(.loading) })
+//            .flatMap { [viewStateSubject] _ in
+//                service.getTodoItems()
+//                .receive(on: RunLoop.main)
+//                .catch { _ -> Empty<[TodoItem], Never> in
+//                    viewStateSubject.send(.error)
+//                    return .init(completeImmediately: false) }
+//            }
+//            .receive(on: RunLoop.main)
+//            .sink(receiveValue: { [viewStateSubject] items in
+//                viewStateSubject.send(.content(items))
+//            })
+//            .store(in: &cancellables)
         
     }
 }
