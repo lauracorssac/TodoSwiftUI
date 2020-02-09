@@ -15,7 +15,7 @@ class CoreDataStack {
     
     private init() { }
     
-    lazy var persistentContainer: NSPersistentCloudKitContainer = {
+    var persistentContainer: NSPersistentCloudKitContainer = {
         
         let container = NSPersistentCloudKitContainer(name: "TodoSwiftUI")
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in

@@ -14,16 +14,11 @@ struct TodoListView: View {
     
     @State private var showModal = false
     @ObservedObject var viewModel: TodoListViewModel
-    private let converter = ManagedObjectToReactiveConverter()
-    @FetchRequest(entity: TodoItemManagedObject.entity(), sortDescriptors: []) var todoItems: FetchedResults<TodoItemManagedObject>
 
     var body: some View {
-
+        
         NavigationView {
-            
-            List(todoItems) { item in
-                Text(item.title) }
-                .buttonStyle(PlainButtonStyle())
+            contentView()
                 .navigationBarTitle("To Do Lista")
                 .navigationBarItems(trailing: Button(action: {
                     self.showModal = true
@@ -32,15 +27,40 @@ struct TodoListView: View {
                         .imageScale(.large)
                 }))
                 .sheet(isPresented: $showModal) {
-                    NewToDoView(showModal: self.$showModal, viewModel: NewToDoViewModel(service: TodoListService())) }
+                    NewToDoView(showModal: self.$showModal, viewModel: NewToDoViewModel(service: CoreDataManager()))
+            }
         }
         
     }
+    
+    func contentView() -> some View {
+         switch viewModel.viewState {
+         case .error:
+             return AnyView(
+                 VStack {
+                     Text("errro :(")
+                     Button(action: {
+                         self.viewModel.shoudRequest = ()
+                     }) {
+                         Text("try again")
+                     }
+                 }
+             )
+         case .content(let todoItems):
+             return AnyView(
+                 List(todoItems) { item in
+                    TodoItemRow(todoItem: item.asReactive())
+                 }.buttonStyle(PlainButtonStyle())
+             )
+         case .loading:
+             return AnyView(Text("loading"))
+         }
+     }
     
 }
 
 struct TodoListView_Previews: PreviewProvider {
     static var previews: some View {
-        TodoListView(viewModel: .init())
+        TodoListView(viewModel: .init(service: CoreDataManager()))
     }
 }

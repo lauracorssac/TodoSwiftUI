@@ -16,7 +16,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
        
         let context = CoreDataStack.shared.persistentContainer.viewContext
-        let contentView = TodoListView(viewModel: .init())
+        let contentView = TodoListView(viewModel: .init(service: CoreDataManager()))
             .environment(\.managedObjectContext, context)
 
         if let windowScene = scene as? UIWindowScene {

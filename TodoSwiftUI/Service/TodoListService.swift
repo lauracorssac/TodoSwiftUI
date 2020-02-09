@@ -11,14 +11,13 @@ import Combine
 
 class TodoListService: ToDoServices {
     
+    let didChangeContent = PassthroughSubject<Void, Never>()
+    
     func save(todoItem: TodoItem) -> AnyPublisher<Void, URLError> {
         
         return Just(Void())
             .mapError { _ in URLError(URLError.unknown) }
             .eraseToAnyPublisher()
-        
-//        return Fail<Void, URLError>(error: URLError(URLError.unsupportedURL))
-//            .eraseToAnyPublisher()
         
     }
     

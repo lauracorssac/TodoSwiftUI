@@ -8,16 +8,76 @@
 
 import Foundation
 import CoreData
+import SwiftUI
+import Combine
 
-class CoreDataManager {
+class CoreDataManager: NSObject, ToDoServices {
     
-    static func allIdeasFetchRequest() -> NSFetchRequest<TodoItemManagedObject> {
+    let didChangeContent = PassthroughSubject<Void, Never>()
+    let fetchRequest: NSFetchRequest<TodoItemManagedObject> = NSFetchRequest(entityName: "\(TodoItemManagedObject.self)")
+    
+    lazy var controller: NSFetchedResultsController<TodoItemManagedObject> = {
+        let controller = NSFetchedResultsController(fetchRequest: self.fetchRequest,
+                                   managedObjectContext: CoreDataStack.shared.persistentContainer.viewContext,
+                                   sectionNameKeyPath: nil, cacheName: nil)
+        controller.delegate = self
+        return controller
+    }()
+    
         
-        let request = NSFetchRequest<TodoItemManagedObject>(entityName: "TodoItemManagedObject")
+    func getTodoItems() -> AnyPublisher<[TodoItem], URLError> {
         
-        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
-          
-        return request
+        fetchRequest.sortDescriptors = []
+        
+        do {
+            try controller.performFetch()
+        } catch {
+            
+            return Fail(error: URLError(URLError.unknown))
+                               .eraseToAnyPublisher()
+            
+        }
+        
+        guard let objects = controller.fetchedObjects else {
+            return Fail(error: URLError(URLError.unknown)).eraseToAnyPublisher()
+        }
+        
+        return Just( objects.map { return $0.asTodoItem() })
+            .setFailureType(to: URLError.self)
+            .eraseToAnyPublisher()
+        
     }
     
+    func save(todoItem: TodoItem) -> AnyPublisher<Void, URLError> {
+        
+        guard
+            let managedObj = NSEntityDescription.insertNewObject(forEntityName: "\(TodoItemManagedObject.self)", into: CoreDataStack.shared.persistentContainer.viewContext) as? TodoItemManagedObject
+            else {
+                return Fail(error: URLError(URLError.unknown))
+                    .eraseToAnyPublisher() }
+        
+        managedObj.date = todoItem.date
+        managedObj.isDone = todoItem.isDone
+        managedObj.title = todoItem.title
+        managedObj.id = todoItem.id
+        
+        
+        do {
+            try CoreDataStack.shared.saveContext()
+        } catch {
+            return Fail(error: URLError(URLError.unknown))
+                           .eraseToAnyPublisher()
+        }
+        return Just(())
+            .setFailureType(to: URLError.self)
+            .eraseToAnyPublisher()
+        
+    }
+}
+
+extension CoreDataManager: NSFetchedResultsControllerDelegate {
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        self.didChangeContent.send(())
+    }
 }

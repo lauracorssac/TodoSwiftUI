@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8D2B3FDC23EDD90000134480 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D2B3FDB23EDD90000134480 /* CloudKit.framework */; };
 		8D5A8DAD23CA9E1200180782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5A8DAC23CA9E1200180782 /* AppDelegate.swift */; };
 		8D5A8DAF23CA9E1200180782 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5A8DAE23CA9E1200180782 /* SceneDelegate.swift */; };
 		8D5A8DB123CA9E1200180782 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5A8DB023CA9E1200180782 /* ContentView.swift */; };
@@ -41,6 +42,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8D2B3FD923EDD8E600134480 /* TodoSwiftUI.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TodoSwiftUI.entitlements; sourceTree = "<group>"; };
+		8D2B3FDB23EDD90000134480 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		8D5A8DA923CA9E1200180782 /* TodoSwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TodoSwiftUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D5A8DAC23CA9E1200180782 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8D5A8DAE23CA9E1200180782 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -73,6 +76,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8D2B3FDC23EDD90000134480 /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,12 +90,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8D2B3FDA23EDD90000134480 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8D2B3FDB23EDD90000134480 /* CloudKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		8D5A8DA023CA9E1200180782 = {
 			isa = PBXGroup;
 			children = (
 				8D5A8DAB23CA9E1200180782 /* TodoSwiftUI */,
 				8D5A8DC223CA9E1A00180782 /* TodoSwiftUITests */,
 				8D5A8DAA23CA9E1200180782 /* Products */,
+				8D2B3FDA23EDD90000134480 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -107,6 +120,7 @@
 		8D5A8DAB23CA9E1200180782 /* TodoSwiftUI */ = {
 			isa = PBXGroup;
 			children = (
+				8D2B3FD923EDD8E600134480 /* TodoSwiftUI.entitlements */,
 				8D9FA13823E74274001FDB79 /* Resources */,
 				8D9FA13723E72996001FDB79 /* CoreData */,
 				8D5A8DD723CB5FF800180782 /* Service */,
@@ -498,6 +512,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = TodoSwiftUI/TodoSwiftUI.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"TodoSwiftUI/Preview Content\"";
 				DEVELOPMENT_TEAM = HXG58UK739;
@@ -518,6 +533,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = TodoSwiftUI/TodoSwiftUI.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"TodoSwiftUI/Preview Content\"";
 				DEVELOPMENT_TEAM = HXG58UK739;

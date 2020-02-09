@@ -11,27 +11,34 @@ import CoreData
 
 struct TodoItem: Codable, Identifiable {
     
-    let id: Int
+    let id: UUID
     let title: String
-    let date: String
+    let date: Date?
     let isDone: Bool
     
-    init(id: Int, title: String, date: String, isDone: Bool) {
+    init(id: UUID, title: String, date: Date?, isDone: Bool) {
         self.id = id
         self.title = title
         self.date = date
         self.isDone = isDone
     }
+    
+    func asReactive() -> TodoItemReactive {
+        
+        return TodoItemReactive(id: self.id, title: self.title, isDone: self.isDone, date: self.date)
+        
+    }
+    
 }
 
 class TodoItemReactive: ObservableObject {
     
-    let id: Int
+    let id: UUID
     let title: String
-    let date: String
+    let date: Date?
     @Published var isDone: Bool
     
-    init(id: Int, title: String, isDone: Bool, date: String) {
+    init(id: UUID, title: String, isDone: Bool, date: Date?) {
         self.id = id
         self.title = title
         self.isDone = isDone
@@ -42,28 +49,26 @@ class TodoItemReactive: ObservableObject {
 @objc(TodoItemManagedObject)
 class TodoItemManagedObject: NSManagedObject, Identifiable {
     
-    @NSManaged var id: Int64
+    @NSManaged var id: UUID?
     @NSManaged var title: String
-    @NSManaged var date: Date
+    @NSManaged var date: Date?
     @NSManaged var isDone: Bool
     
 }
 
-class ManagedObjectToReactiveConverter {
-    func convertToReactive(todoItem: TodoItemManagedObject) -> TodoItemReactive {
-       
-        TodoItemReactive(id: todoItem.id.hashValue,
-                            title: todoItem.title,
-                            isDone: todoItem.isDone,
-                            date: "")
-       }
-}
-
-class TodoItemConverter {
-    func convertToReactive(todoItem: TodoItem) -> TodoItemReactive {
-        TodoItemReactive(id: todoItem.id,
-                         title: todoItem.title,
-                         isDone: todoItem.isDone,
-                         date: todoItem.date)
+extension TodoItemManagedObject {
+    
+    func asTodoItem() -> TodoItem {
+        
+        return TodoItem(id: self.id ?? UUID(), title: self.title, date: self.date, isDone: self.isDone)
+        
     }
+    
+    func asReactiveTodoItem() -> TodoItemReactive {
+        TodoItemReactive(id: self.id ?? UUID(),
+                         title: self.title,
+                         isDone: self.isDone,
+                         date: self.date)
+    }
+    
 }

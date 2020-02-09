@@ -10,6 +10,11 @@ import Foundation
 import Combine
 
 protocol ToDoServices {
+    
+    var didChangeContent: PassthroughSubject<Void, Never> { get }
+    
+    
     func getTodoItems() -> AnyPublisher<[TodoItem], URLError>
     func save(todoItem: TodoItem) -> AnyPublisher<Void, URLError>
+    
 }

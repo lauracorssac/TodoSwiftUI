@@ -33,9 +33,9 @@ struct TodoItemRow: View {
 
 struct TodoItemRow_Previews: PreviewProvider {
     static var previews: some View {
-        TodoItemRow(todoItem: TodoItemReactive(id: 0,
+        TodoItemRow(todoItem: TodoItemReactive(id: UUID(),
                                                title: "todo item test",
                                                isDone: true,
-                                               date: "25 de janeiro de 2020"))
+                                               date: Date()))
     }
 }

@@ -8,7 +8,6 @@
 
 import Foundation
 import Combine
-import CoreData
 
 class NewToDoViewModel: ObservableObject {
     
@@ -41,38 +40,35 @@ class NewToDoViewModel: ObservableObject {
             .store(in: &subscriptions)
         
         doneButtonPressed
-            .sink { [weak self] _ in
-                self?.save() }
-            .store(in: &subscriptions)
+            .map(getItem)
+            .flatMap({ [weak self] item -> AnyPublisher<Void, Never> in
+                
+                guard let self = self else {
+                    return Empty<Void, Never>().eraseToAnyPublisher()
+                }
+                
+                return service
+                    .save(todoItem: item)
+                    .receive(on: RunLoop.main)
+                    .catch(self.handleError(error:))
+                    .eraseToAnyPublisher()
+                
+            })
+            .receive(on: RunLoop.main)
+            .sink(receiveValue: { [weak self] _ in
+                self?.shouldFinish = true
+            }).store(in: &subscriptions)
         
     }
     
     func getItem() -> TodoItem {
-        return TodoItem(id: 0, title: self.titleTyped, date: self.dateFormatted, isDone: false)
+        return TodoItem(id: UUID(), title: self.titleTyped, date: self.dateChoosed, isDone: false)
     }
     
     func handleError(error: URLError) -> Empty<Void, Never> {
         
         self.shouldPresentAlert = true
         return Empty<Void, Never>()
-    }
-    
-    func save() {
-        
-        guard
-            let managedObj = NSEntityDescription.insertNewObject(forEntityName: "\(TodoItemManagedObject.self)", into: CoreDataStack.shared.persistentContainer.viewContext) as? TodoItemManagedObject
-            else { return }
-        
-        managedObj.date = dateChoosed
-        managedObj.isDone = false
-        managedObj.title = titleTyped
-        
-        guard (try? CoreDataStack.shared.saveContext()) == nil else {
-            shouldFinish = true
-            return
-        }
-        self.shouldPresentAlert = true
-        
     }
     
 }
