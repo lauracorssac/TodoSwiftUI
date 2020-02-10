@@ -29,6 +29,16 @@ struct TodoItem: Codable, Identifiable {
         
     }
     
+    func asManagedObject() -> TodoItemManagedObject {
+        let object = TodoItemManagedObject(context: CoreDataStack.shared.persistentContainer.viewContext)
+        object.title = self.title
+        object.date = self.date
+        object.isDone = self.isDone
+        object.id = self.id
+        return object
+    }
+    
+    
 }
 
 class TodoItemReactive: ObservableObject {

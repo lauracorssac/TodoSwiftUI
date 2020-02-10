@@ -49,7 +49,7 @@ struct TodoListView: View {
          case .content(let todoItems):
              return AnyView(
                  List(todoItems) { item in
-                    TodoItemRow(todoItem: item.asReactive())
+                    TodoItemRow(viewModel: .init(todoItem: item, service: CoreDataManager()))
                  }.buttonStyle(PlainButtonStyle())
              )
          case .loading:

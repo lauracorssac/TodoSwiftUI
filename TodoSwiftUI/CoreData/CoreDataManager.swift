@@ -73,6 +73,33 @@ class CoreDataManager: NSObject, ToDoServices {
             .eraseToAnyPublisher()
         
     }
+    
+    func update(item: TodoItem, to checked: Bool) -> AnyPublisher<Void, URLError> {
+        
+        let request: NSFetchRequest<TodoItemManagedObject> = NSFetchRequest(entityName: "\(TodoItemManagedObject.self)")
+        let predicate = NSPredicate(format: "id == %@", item.id.uuidString)
+        request.predicate = predicate
+        do  {
+            let results = try CoreDataStack.shared.persistentContainer.viewContext.fetch(request)
+            guard let objectUpdate = results.first else { throw URLError(URLError.unknown) }
+            objectUpdate.setValue(checked, forKey: "isDone")
+            do {
+                try CoreDataStack.shared.saveContext()
+            } catch {
+                return Fail(error: URLError(URLError.unknown))
+                               .eraseToAnyPublisher()
+            }
+        } catch {
+            return Fail(error: URLError(URLError.unknown))
+                .eraseToAnyPublisher()
+        }
+        
+        return Just(())
+            .setFailureType(to: URLError.self)
+            .eraseToAnyPublisher()
+        
+    }
+    
 }
 
 extension CoreDataManager: NSFetchedResultsControllerDelegate {
