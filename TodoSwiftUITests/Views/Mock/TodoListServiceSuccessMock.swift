@@ -12,11 +12,20 @@ import Combine
 
 class TodoListServiceSuccessMock: ToDoServices {
     
+    var didChangeContent = PassthroughSubject<Void, Never>()
+    
+    func update(item: TodoItem, to checked: Bool) -> AnyPublisher<Void, URLError> {
+        
+        return Just(())
+            .mapError { _ in URLError(URLError.unknown) }
+            .eraseToAnyPublisher()
+    }
+    
     func getTodoItems() -> AnyPublisher<[TodoItem], URLError> {
         let todoItems = [
-            TodoItem(id: 0, title: "todo item 0", date: "22/12/2019", isDone: false),
-            TodoItem(id: 1, title: "todo item 1", date: "22/01/2020", isDone: true),
-            TodoItem(id: 2, title: "todo item 2", date: "22/01/2020", isDone: false)
+            TodoItem(id: UUID(), title: "todo item 0", date: Date(), isDone: false),
+            TodoItem(id: UUID(), title: "todo item 1", date: Date(), isDone: true),
+            TodoItem(id: UUID(), title: "todo item 2", date: Date(), isDone: false)
         ]
         
         return Just(todoItems)

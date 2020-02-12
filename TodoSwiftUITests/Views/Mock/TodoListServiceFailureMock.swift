@@ -12,6 +12,15 @@ import Combine
 
 class TodoListServiceFailureMock: ToDoServices {
     
+    var didChangeContent = PassthroughSubject<Void, Never>()
+    
+    func update(item: TodoItem, to checked: Bool) -> AnyPublisher<Void, URLError> {
+        
+        return Fail<Void, URLError>(error: URLError(URLError.unknown))
+            .eraseToAnyPublisher()
+    }
+    
+    
     func getTodoItems() -> AnyPublisher<[TodoItem], URLError> {
         
         return Fail<[TodoItem], URLError>(error: URLError(URLError.unknown))

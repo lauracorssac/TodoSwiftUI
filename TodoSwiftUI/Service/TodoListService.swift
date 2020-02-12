@@ -48,4 +48,12 @@ class TodoListService: ToDoServices {
         
         return response
     }
+    
+    func delete(item: TodoItem) -> AnyPublisher<Void, URLError> {
+        
+        return Just(Void())
+            .mapError { _ in URLError(URLError.unknown) }
+            .eraseToAnyPublisher()
+    }
+    
 }

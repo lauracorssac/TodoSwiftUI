@@ -100,6 +100,31 @@ class CoreDataManager: NSObject, ToDoServices {
         
     }
     
+    func delete(item: TodoItem) -> AnyPublisher<Void, URLError> {
+        
+        let request: NSFetchRequest<TodoItemManagedObject> = NSFetchRequest(entityName: "\(TodoItemManagedObject.self)")
+        let predicate = NSPredicate(format: "id == %@", item.id.uuidString)
+        request.predicate = predicate
+        do  {
+            let results = try CoreDataStack.shared.persistentContainer.viewContext.fetch(request)
+            guard let object = results.first else { throw URLError(URLError.unknown) }
+            CoreDataStack.shared.persistentContainer.viewContext.delete(object)
+            do {
+                try CoreDataStack.shared.saveContext()
+            } catch {
+                return Fail(error: URLError(URLError.unknown))
+                               .eraseToAnyPublisher()
+            }
+        } catch {
+            return Fail(error: URLError(URLError.unknown))
+                .eraseToAnyPublisher()
+        }
+        
+        return Just(())
+            .setFailureType(to: URLError.self)
+            .eraseToAnyPublisher()
+    }
+    
 }
 
 extension CoreDataManager: NSFetchedResultsControllerDelegate {
