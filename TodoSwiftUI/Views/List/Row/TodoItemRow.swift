@@ -20,8 +20,10 @@ struct TodoItemRow: View {
     
     var body: some View {
             
-        NavigationLink(destination: TodoDetailsView(showSelf: $showDetail,
-                                                    viewModel: .init(todoItem: viewModel.todoItem, service: CoreDataManager())),
+        NavigationLink(
+            destination: TodoDetailsView(showSelf: $showDetail,
+                                                    viewModel: .init(todoItem: viewModel.todoItem,
+                                                                     service: CoreDataManager())),
                        isActive: $showDetail) {
                         
                         HStack {
@@ -29,7 +31,7 @@ struct TodoItemRow: View {
                                 Image(systemName: viewModel.isDone ? "checkmark.square" : "square")
                                     .imageScale(.large)
                             }
-                            Text(viewModel.todoItem.title)
+                            Text(viewModel.title)
                         }
         }
             
@@ -41,7 +43,10 @@ struct TodoItemRow: View {
 
 struct TodoItemRow_Previews: PreviewProvider {
     static var previews: some View {
-        TodoItemRow(viewModel: .init(todoItem: TodoItem(id: UUID(), title: "todo item 0", date: Date(), isDone: false),
+        TodoItemRow(viewModel: .init(todoItem: TodoItemReactive(id: UUID(),
+                                                        title: "todo item 0",
+                                                        isDone: false,
+                                                        date: Date()),
                                      service: CoreDataManager()))
     }
 }

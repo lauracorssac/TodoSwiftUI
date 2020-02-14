@@ -113,13 +113,13 @@
 			path = Row;
 			sourceTree = "<group>";
 		};
-		8D2B3FE023F1AE6600134480 /* New Group */ = {
+		8D2B3FE023F1AE6600134480 /* Details */ = {
 			isa = PBXGroup;
 			children = (
 				8D2B3FE123F1AF0300134480 /* TodoDetailsView.swift */,
 				8D2B3FE323F1AF2C00134480 /* TodoDetailsViewModel.swift */,
 			);
-			path = "New Group";
+			path = Details;
 			sourceTree = "<group>";
 		};
 		8D5A8DA023CA9E1200180782 = {
@@ -185,7 +185,7 @@
 		8D5A8DD123CB5B4500180782 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				8D2B3FE023F1AE6600134480 /* New Group */,
+				8D2B3FE023F1AE6600134480 /* Details */,
 				8D7BD8BB23D138CA00FD6CAF /* NewToDo */,
 				8D5A8DD423CB5B5F00180782 /* List */,
 			);

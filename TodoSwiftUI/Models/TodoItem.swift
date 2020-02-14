@@ -44,8 +44,8 @@ struct TodoItem: Codable, Identifiable {
 class TodoItemReactive: ObservableObject {
     
     let id: UUID
-    let title: String
-    let date: Date?
+    @Published var title: String
+    @Published var date: Date?
     @Published var isDone: Bool
     
     init(id: UUID, title: String, isDone: Bool, date: Date?) {
@@ -53,6 +53,10 @@ class TodoItemReactive: ObservableObject {
         self.title = title
         self.isDone = isDone
         self.date = date
+    }
+    
+    func asTodoItem() -> TodoItem {
+        return TodoItem(id: self.id, title: self.title, date: self.date, isDone: self.isDone)
     }
 }
 

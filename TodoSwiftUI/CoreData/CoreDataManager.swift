@@ -74,7 +74,7 @@ class CoreDataManager: NSObject, ToDoServices {
         
     }
     
-    func update(item: TodoItem, to checked: Bool) -> AnyPublisher<Void, URLError> {
+    func update(id: UUID, to item: TodoItem) -> AnyPublisher<Void, URLError> {
         
         let request: NSFetchRequest<TodoItemManagedObject> = NSFetchRequest(entityName: "\(TodoItemManagedObject.self)")
         let predicate = NSPredicate(format: "id == %@", item.id.uuidString)
@@ -82,7 +82,10 @@ class CoreDataManager: NSObject, ToDoServices {
         do  {
             let results = try CoreDataStack.shared.persistentContainer.viewContext.fetch(request)
             guard let objectUpdate = results.first else { throw URLError(URLError.unknown) }
-            objectUpdate.setValue(checked, forKey: "isDone")
+            objectUpdate.setValue(item.isDone, forKey: "isDone")
+            objectUpdate.setValue(item.date, forKey: "date")
+            objectUpdate.setValue(item.title, forKey: "title")
+            
             do {
                 try CoreDataStack.shared.saveContext()
             } catch {

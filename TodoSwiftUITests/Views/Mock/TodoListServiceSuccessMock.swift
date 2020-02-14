@@ -11,8 +11,14 @@ import Combine
 @testable import TodoSwiftUI
 
 class TodoListServiceSuccessMock: ToDoServices {
-    
+  
     var didChangeContent = PassthroughSubject<Void, Never>()
+    
+    func delete(item: TodoItem) -> AnyPublisher<Void, URLError> {
+          return Just(())
+            .mapError { _ in URLError(URLError.unknown) }
+            .eraseToAnyPublisher()
+      }
     
     func update(item: TodoItem, to checked: Bool) -> AnyPublisher<Void, URLError> {
         

@@ -21,6 +21,7 @@ struct NewToDoView: View {
         self.viewModel = viewModel
         
         self.viewModel.$shouldFinish
+            .dropFirst()
             .map { !$0 }
             .assign(to: \.showModal, on: self)
             .store(in: &subscriptions)

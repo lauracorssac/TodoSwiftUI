@@ -15,7 +15,7 @@ protocol ToDoServices {
     
     func getTodoItems() -> AnyPublisher<[TodoItem], URLError>
     func save(todoItem: TodoItem) -> AnyPublisher<Void, URLError>
-    func update(item: TodoItem, to checked: Bool) -> AnyPublisher<Void, URLError>
+    func update(id: UUID, to item: TodoItem) -> AnyPublisher<Void, URLError>
     func delete(item: TodoItem) -> AnyPublisher<Void, URLError>
     
 }

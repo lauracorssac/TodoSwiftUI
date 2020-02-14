@@ -13,8 +13,7 @@ class TodoListService: ToDoServices {
     
     let didChangeContent = PassthroughSubject<Void, Never>()
     
-    func update(item: TodoItem, to checked: Bool) -> AnyPublisher<Void, URLError> {
-        
+    func update(id: UUID, to item: TodoItem) -> AnyPublisher<Void, URLError> {
         return Just(Void())
             .mapError { _ in URLError(URLError.unknown) }
             .eraseToAnyPublisher()
