@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8D28121823F700C900314419 /* TodoItemReactive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D28121723F700C900314419 /* TodoItemReactive.swift */; };
+		8D28121A23F700EC00314419 /* TodoManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D28121923F700EC00314419 /* TodoManagedObject.swift */; };
 		8D2B3FDC23EDD90000134480 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D2B3FDB23EDD90000134480 /* CloudKit.framework */; };
 		8D2B3FDF23F1836F00134480 /* TodoItemRowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D2B3FDE23F1836F00134480 /* TodoItemRowViewModel.swift */; };
 		8D2B3FE223F1AF0300134480 /* TodoDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D2B3FE123F1AF0300134480 /* TodoDetailsView.swift */; };
@@ -45,6 +47,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8D28121723F700C900314419 /* TodoItemReactive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoItemReactive.swift; sourceTree = "<group>"; };
+		8D28121923F700EC00314419 /* TodoManagedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoManagedObject.swift; sourceTree = "<group>"; };
 		8D2B3FD923EDD8E600134480 /* TodoSwiftUI.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TodoSwiftUI.entitlements; sourceTree = "<group>"; };
 		8D2B3FDB23EDD90000134480 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		8D2B3FDE23F1836F00134480 /* TodoItemRowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoItemRowViewModel.swift; sourceTree = "<group>"; };
@@ -178,6 +182,8 @@
 			isa = PBXGroup;
 			children = (
 				8D5A8DCF23CB56E200180782 /* TodoItem.swift */,
+				8D28121723F700C900314419 /* TodoItemReactive.swift */,
+				8D28121923F700EC00314419 /* TodoManagedObject.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -384,7 +390,9 @@
 				8D2B3FDF23F1836F00134480 /* TodoItemRowViewModel.swift in Sources */,
 				8D7BD8C123DDC5BC00FD6CAF /* TodoListServices.swift in Sources */,
 				8D5A8DD623CB5B7100180782 /* TodoListViewModel.swift in Sources */,
+				8D28121823F700C900314419 /* TodoItemReactive.swift in Sources */,
 				8D9FA13F23E776A4001FDB79 /* CoreDataManager.swift in Sources */,
+				8D28121A23F700EC00314419 /* TodoManagedObject.swift in Sources */,
 				8D5A8DB123CA9E1200180782 /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import CoreData
 
 struct TodoItem: Codable, Identifiable {
     
@@ -36,53 +35,6 @@ struct TodoItem: Codable, Identifiable {
         object.isDone = self.isDone
         object.id = self.id
         return object
-    }
-    
-    
-}
-
-class TodoItemReactive: ObservableObject {
-    
-    let id: UUID
-    @Published var title: String
-    @Published var date: Date?
-    @Published var isDone: Bool
-    
-    init(id: UUID, title: String, isDone: Bool, date: Date?) {
-        self.id = id
-        self.title = title
-        self.isDone = isDone
-        self.date = date
-    }
-    
-    func asTodoItem() -> TodoItem {
-        return TodoItem(id: self.id, title: self.title, date: self.date, isDone: self.isDone)
-    }
-}
-
-@objc(TodoItemManagedObject)
-class TodoItemManagedObject: NSManagedObject, Identifiable {
-    
-    @NSManaged var id: UUID?
-    @NSManaged var title: String
-    @NSManaged var date: Date?
-    @NSManaged var isDone: Bool
-    
-}
-
-extension TodoItemManagedObject {
-    
-    func asTodoItem() -> TodoItem {
-        
-        return TodoItem(id: self.id ?? UUID(), title: self.title, date: self.date, isDone: self.isDone)
-        
-    }
-    
-    func asReactiveTodoItem() -> TodoItemReactive {
-        TodoItemReactive(id: self.id ?? UUID(),
-                         title: self.title,
-                         isDone: self.isDone,
-                         date: self.date)
     }
     
 }

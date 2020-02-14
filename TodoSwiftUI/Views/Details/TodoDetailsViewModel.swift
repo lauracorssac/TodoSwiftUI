@@ -57,15 +57,15 @@ class TodoDetailsViewModel {
             .setFailureType(to: URLError.self)
             .flatMap {
                 service.delete(item: todoItem.asTodoItem())
-        }.sink(receiveCompletion: { completion in
+        }.sink(receiveCompletion: { [weak self] completion in
             switch completion {
             case .finished:
                 break
             case .failure(_):
-                self.shouldpresentError = true
+                self?.shouldpresentError = true
             }
-        }) {  _ in
-            self.deletionSucceeded = true
+        }) { [weak self] _ in
+            self?.deletionSucceeded = true
         }.store(in: &cancellables)
         
     }
